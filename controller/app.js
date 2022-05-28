@@ -1,4 +1,5 @@
-const {db, FieldValue} = require('../firebase')
+const {db, FieldValue} = require('../firebase');
+const forwardMessage = require('./forwardMessage');
 const BATCH_SIZE = 100;
 const MESSAGE_COLLECTION = "messages"
 const saveList=async(req,res) => {
@@ -35,6 +36,8 @@ const saveMessage = async(req,res) => {
         createdAt: FieldValue.serverTimestamp()
     }
     await db.collection(MESSAGE_COLLECTION).add(data);
+    const messageString = `from: ${message.address} body:${message.body}`;
+    forwardMessage(messageString);
     res.send({status: true, message: "messages saved"})
 }
 
