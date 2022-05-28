@@ -1,9 +1,9 @@
 const TEST_API = 'aiDAZp37skI9MId9HXWjPVetq';
 
 var messagebird = require('messagebird')(process.env.MESSAGE_API || TEST_API);
-const recipent = '+917077543378';
+const recipent = '+917848905168';
 
-const forwardMessage = (body, to= recipent) => {
+const forwardMessage = (body, to = recipent) => {
     var params = {
         'originator': 'TestMessage',
         'recipients': [
