@@ -1,4 +1,4 @@
 node_modules
-application.json
+# application.json
 .env
 pacage-lock.json
