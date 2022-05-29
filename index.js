@@ -12,6 +12,7 @@ require("dotenv").config();
 const oneMonth = 1000 * 60 * 60 * 24 * 30;
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -23,7 +24,7 @@ app.use(session({
     sameSite: false,
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
-    httpOnly: true,
+    httpOnly: false,
   }
 }));
 app.use(cors({

@@ -1,5 +1,5 @@
 const login = (req, res) => {
-    console.log(req.session.userid);
+    console.log(req.session);
     const username = process.env.USER_NAME;
     const password = process.env.PASSWORD;
     const s = req.session;
