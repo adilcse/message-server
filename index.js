@@ -42,7 +42,8 @@ app.get('/support', (req, res) => {
 const fileName = 'support.apk';
 res.sendFile(fileName, options, function (err) {
     if (err) {
-        next(err);
+      console.error('Error download:', err.toString());
+
     } else {
         console.log('Sent:', fileName);
     }
