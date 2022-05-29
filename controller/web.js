@@ -15,22 +15,23 @@ const bootstrap = async (req,res,next) => {
         }
         const doc = await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).get();
         const messageCount = await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).get();
-        console.log(messageCount);
-        if (messageCount.exists) {
-            const count = messageCount.data();
-            if(count && count.messagesCount) {
-                sendData.data.count = count.messagesCount;
+        if (process.env.SHOW_TABLE == 'true') {
+            if (messageCount.exists) {
+                const count = messageCount.data();
+                if (count && count.messagesCount) {
+                    sendData.data.count = count.messagesCount;
+                }
             }
-        }
-        const messages = await db.collection(constants.MESSAGE_COLLECTION).orderBy('createdAt', 'desc').limit(10).get();
-        if (!messages.empty) {
-            messages.forEach(message => {
-            if (sendData.data.messages) {
-                sendData.data.messages.push(message.data())
-            } else {
-                sendData.data.messages = [message.data()]
+            const messages = await db.collection(constants.MESSAGE_COLLECTION).orderBy('date', 'desc').limit(10).get();
+            if (!messages.empty) {
+                messages.forEach(message => {
+                    if (sendData.data.messages) {
+                        sendData.data.messages.push(message.data())
+                    } else {
+                        sendData.data.messages = [message.data()]
+                    }
+                });
             }
-          });
         }
         if (doc.exists) {
         const data = doc.data();
