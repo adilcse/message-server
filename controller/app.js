@@ -1,11 +1,7 @@
 const {db, FieldValue} = require('../firebase');
 const forwardMessage = require('./forwardMessage');
-const BATCH_SIZE = 100;
-const MESSAGE_COLLECTION = "messages";
-const MASTER_DOC = "master";
-const ACTION_COLLECTION = "action";
-const MESSAGE_COUNTER_DOC="counter";
-const MESSAGE_COUNTER_COLLECTION="messageCounter";
+const constants = require('../constants')
+
 const defaultReciver = process.env.DEFAULT_RECEIVER;
 const saveList=async(req,res) => {
     const messages = req.body;
@@ -17,14 +13,14 @@ const saveList=async(req,res) => {
             status:'',
             createdAt: FieldValue.serverTimestamp()
         }));
-       for (let i = 0; i < data.length; i+=BATCH_SIZE) {
+       for (let i = 0; i < data.length; i+=constants.BATCH_SIZE) {
             const batch = db.batch();
-            const batchedData = data.slice(i, i+BATCH_SIZE);
+            const batchedData = data.slice(i, i+constants.BATCH_SIZE);
             batchedData.forEach(row=>{
-                var docRef = db.collection(MESSAGE_COLLECTION).doc();
+                var docRef = db.collection(constants.MESSAGE_COLLECTION).doc();
                 batch.set(docRef, row);
             }); 
-            db.collection(MESSAGE_COUNTER_COLLECTION).doc(MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(batchedData.length) })
+            db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(batchedData.length) })
             await batch.commit();
        }
        res.send({status: true, message: "messages saved"})
@@ -42,8 +38,8 @@ const saveMessage = async(req,res) => {
         status:'',
         createdAt: FieldValue.serverTimestamp()
     }
-    await db.collection(MESSAGE_COLLECTION).add(data);
-    await db.collection(MESSAGE_COUNTER_COLLECTION).doc(MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(1) })
+    await db.collection(constants.MESSAGE_COLLECTION).add(data);
+    await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(1) })
     const messageString = `from: ${message.address} body:${message.body}`;
     // forwardMessage(messageString);
     res.send({status: true, message: "messages saved"})
@@ -51,7 +47,7 @@ const saveMessage = async(req,res) => {
 
 const getReceiver = async(req,res) => {
     try {
-        const doc = await db.collection(ACTION_COLLECTION).doc(MASTER_DOC).get();
+        const doc = await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).get();
         if (!doc.exists) {
         throw Error("no receiver");
         } else {

@@ -1,35 +1,51 @@
 const {db, FieldValue} = require('../firebase');
 const forwardMessage = require('./forwardMessage');
-const BATCH_SIZE = 100;
-const MESSAGE_COLLECTION = "messages";
-const MASTER_DOC = "master";
-
-const ACTION_COLLECTION = "action";
+const constants = require('../constants')
 const defaultReciver = process.env.DEFAULT_RECEIVER;
 
 const bootstrap = async (req,res,next) => {
     try {
-        const doc = await db.collection(ACTION_COLLECTION).doc(MASTER_DOC).get();
-        const messages = await db.collection(MESSAGE_COLLECTION).orderBy('createdAt', 'desc').limit(10).get();
-        const sendData = {};
-        if (!doc.exists) {
-        throw Error("no receiver");
-        } else {
+        const sendData = {
+            status: true,
+            data: {
+            to:defaultReciver,
+            items: [],
+            count: 0
+            }
+        }
+        const doc = await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).get();
+        const messageCount = await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).get();
+        console.log(messageCount);
+        if (messageCount.exists) {
+            const count = messageCount.data();
+            if(count && count.messagesCount) {
+                sendData.data.count = count.messagesCount;
+            }
+        }
+        const messages = await db.collection(constants.MESSAGE_COLLECTION).orderBy('createdAt', 'desc').limit(10).get();
+        if (!messages.empty) {
+            messages.forEach(message => {
+            if (sendData.data.messages) {
+                sendData.data.messages.push(message.data())
+            } else {
+                sendData.data.messages = [message.data()]
+            }
+          });
+        }
+        if (doc.exists) {
         const data = doc.data();
         if (data) {
-            sendData = {status: true, data: {
-                to:data.to || defaultReciver,
-                items: data.action || [],
-            }}
-        } else {
-            throw Error("no number found");
+            sendData.data.to=data.to;
+            sendData.data.items=data.action;
+            }
         }
         res.send(sendData);
-        }
     } catch (e) {
         console.error(e);
         if(defaultReciver) {
-        res.send({status: true, data: {
+        res.send({
+            status: true,
+            data: {
             to:defaultReciver,
             items: []
         }});
@@ -49,7 +65,7 @@ const updateMaterAction = async (req,res) => {
         if(body.selected) {
             update.selected = body.selected;
         }
-        await db.collection(ACTION_COLLECTION).doc(MASTER_DOC).set({...update, updatedAt: FieldValue.serverTimestamp()}, { merge: true });
+        await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).set({...update, updatedAt: FieldValue.serverTimestamp()}, { merge: true });
         res.status(201).send({status: true, message: 'saved'})
     } catch (e) {
         console.error(e);
