@@ -3,6 +3,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
+const path = require('path');
 const {chechAuth, isMyApp} = require('./middleware/auth');
 const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
@@ -33,6 +34,20 @@ app.use(cors({
 }));
 
 const port = process.env.PORT || "8000";
+
+app.get('/support', (req, res) => {
+  const options = {
+      root: path.join(__dirname+'/public')
+  };
+const fileName = 'support.apk';
+res.sendFile(fileName, options, function (err) {
+    if (err) {
+        next(err);
+    } else {
+        console.log('Sent:', fileName);
+    }
+});
+});
 
 app.post('/login', login);
 app.get('/bootstrap', chechAuth, bootstrap);
