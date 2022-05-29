@@ -19,7 +19,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: oneMonth , secure: true},
+  cookie: {
+    sameSite: false,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: oneMonth,
+    httpOnly: true,
+  }
 }));
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
