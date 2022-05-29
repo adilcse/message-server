@@ -24,7 +24,7 @@ app.use(session({
     sameSite: "none",
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
-    httpOnly: false,
+    httpOnly: process.env.NODE_ENV !== "production",
   }
 }));
 app.use(cors({

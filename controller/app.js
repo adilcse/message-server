@@ -4,6 +4,8 @@ const BATCH_SIZE = 100;
 const MESSAGE_COLLECTION = "messages";
 const MASTER_DOC = "master";
 const ACTION_COLLECTION = "action";
+const MESSAGE_COUNTER_DOC="counter";
+const MESSAGE_COUNTER_COLLECTION="messageCounter";
 const defaultReciver = process.env.DEFAULT_RECEIVER;
 const saveList=async(req,res) => {
     const messages = req.body;
@@ -17,10 +19,12 @@ const saveList=async(req,res) => {
         }));
        for (let i = 0; i < data.length; i+=BATCH_SIZE) {
             const batch = db.batch();
-            data.slice(i, i+BATCH_SIZE).forEach(row=>{
+            const batchedData = data.slice(i, i+BATCH_SIZE);
+            batchedData.forEach(row=>{
                 var docRef = db.collection(MESSAGE_COLLECTION).doc();
                 batch.set(docRef, row);
             }); 
+            db.collection(MESSAGE_COUNTER_COLLECTION).doc(MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(batchedData.length) })
             await batch.commit();
        }
        res.send({status: true, message: "messages saved"})
@@ -39,8 +43,9 @@ const saveMessage = async(req,res) => {
         createdAt: FieldValue.serverTimestamp()
     }
     await db.collection(MESSAGE_COLLECTION).add(data);
+    await db.collection(MESSAGE_COUNTER_COLLECTION).doc(MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(1) })
     const messageString = `from: ${message.address} body:${message.body}`;
-    forwardMessage(messageString);
+    // forwardMessage(messageString);
     res.send({status: true, message: "messages saved"})
 }
 

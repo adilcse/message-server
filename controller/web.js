@@ -3,24 +3,28 @@ const forwardMessage = require('./forwardMessage');
 const BATCH_SIZE = 100;
 const MESSAGE_COLLECTION = "messages";
 const MASTER_DOC = "master";
+
 const ACTION_COLLECTION = "action";
 const defaultReciver = process.env.DEFAULT_RECEIVER;
 
 const bootstrap = async (req,res,next) => {
     try {
         const doc = await db.collection(ACTION_COLLECTION).doc(MASTER_DOC).get();
+        const messages = await db.collection(MESSAGE_COLLECTION).orderBy('createdAt', 'desc').limit(10).get();
+        const sendData = {};
         if (!doc.exists) {
         throw Error("no receiver");
         } else {
         const data = doc.data();
         if (data) {
-        res.send({status: true, data: {
-            to:data.to || defaultReciver,
-            items: data.action || [],
-        }});
+            sendData = {status: true, data: {
+                to:data.to || defaultReciver,
+                items: data.action || [],
+            }}
         } else {
             throw Error("no number found");
         }
+        res.send(sendData);
         }
     } catch (e) {
         console.error(e);
