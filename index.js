@@ -19,7 +19,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: oneMonth },
+  cookie: { maxAge: oneMonth , secure: true},
 }));
 app.use(cors({
     origin: ['http://localhost:3000'],
