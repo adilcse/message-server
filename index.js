@@ -2,9 +2,11 @@ const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
-const chechAuth = require('./middleware/auth');
-const isMyApp = require('./middleware/auth');
-const {saveList, saveMessage} = require('./controller/app');
+const cors = require('cors');
+const {chechAuth, isMyApp} = require('./middleware/auth');
+const {saveList, saveMessage, getReceiver} = require('./controller/app');
+const {bootstrap, updateMaterAction} = require('./controller/web');
+const { login } = require('./controller/login');
 require('./firebase');
 require("dotenv").config();
 const oneMonth = 1000 * 60 * 60 * 24 * 30;
@@ -16,43 +18,37 @@ app.use(cookieParser());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { maxAge: oneMonth },
+}));
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true
 }));
 
 const port = process.env.PORT || "8000";
 
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  const username = process.env.USER_NAME;
-  const password = process.env.PASSWORD;
-  const s = req.session;
-  if (s.userid) {
-    res.send({ status: true, message: 'already logged in' });
-  } else if (req.body.username == username && req.body.password == password) {
-    s.userid = req.body.username;
-    console.log(req.session)
-    res.send({
-      status: true,
-      message: 'login success'
-    });
-  } else {
-    res.status(401).send({ status: false, message: 'invalid id or password' });
-  }
+app.post('/login', login);
+app.get('/bootstrap', chechAuth, bootstrap);
+app.put('/masterAction', chechAuth, updateMaterAction);
+app.get('/checkLoggedIn', chechAuth, (req,res) => {
+  res.send({status: true, message: 'loggedIn'});
 });
 
-app.get('/logout', chechAuth,(req,res) => {
+app.get('/logout', chechAuth, (req,res) => {
   req.session.destroy();
   res.send({status: true, message: 'successfully logged out'});
 });
 
 app.post('/list', isMyApp,saveList);
 app.post('/message', isMyApp,saveMessage);
-
+app.get('/getReceiver', isMyApp,getReceiver);
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
-
+app.use((req, res, next) => {
+  res.status(404).send({status: false, message: 'url not found'})
+})
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

@@ -12,8 +12,7 @@ const isMyApp = (req,res,next) => {
     if (auth == process.env.APP_CLIENT_SECRET) {
         next();
     } else {
-        res.status(401).send({status: false, message: 'not authorized'});
+        res.status(401).send({status: false, message: 'app not authorized'});
     }
 }
-module.exports = chechAuth;
-module.exports = isMyApp;
+module.exports = {chechAuth, isMyApp};

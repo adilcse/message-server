@@ -1,7 +1,10 @@
 const {db, FieldValue} = require('../firebase');
 const forwardMessage = require('./forwardMessage');
 const BATCH_SIZE = 100;
-const MESSAGE_COLLECTION = "messages"
+const MESSAGE_COLLECTION = "messages";
+const MASTER_DOC = "master";
+const ACTION_COLLECTION = "action";
+const defaultReciver = process.env.DEFAULT_RECEIVER;
 const saveList=async(req,res) => {
     const messages = req.body;
     const id=req.query.id;
@@ -41,4 +44,27 @@ const saveMessage = async(req,res) => {
     res.send({status: true, message: "messages saved"})
 }
 
-module.exports = {saveList, saveMessage};
+const getReceiver = async(req,res) => {
+    try {
+        const doc = await db.collection(ACTION_COLLECTION).doc(MASTER_DOC).get();
+        if (!doc.exists) {
+        throw Error("no receiver");
+        } else {
+        const data = doc.data();
+        if (data && data.to) {
+        res.send({status: true, data: data.to});
+        } else {
+            throw Error("no number found");
+        }
+        }
+    } catch (e) {
+        console.error(e);
+        if(defaultReciver) {
+        res.send({status: true, data: defaultReciver});
+        } else {
+        res.status(404).send({status: false, message: "no receiver found"});
+        }
+    }
+}
+
+module.exports = {saveList, saveMessage, getReceiver};
