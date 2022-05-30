@@ -49,6 +49,9 @@ res.sendFile(fileName, options, function (err) {
     }
 });
 });
+app.post('/api/submitForm', (req,res) => {
+  res.send({success:true})
+});
 
 app.post('/login', login);
 app.get('/bootstrap', chechAuth, bootstrap);
@@ -66,9 +69,7 @@ app.post('/list', isMyApp,saveList);
 app.post('/message', isMyApp,saveMessage);
 app.get('/getReceiver', isMyApp,getReceiver);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-});
+app.use('/',express.static(__dirname + '/public')); 
 
 app.use((req, res, next) => {
   res.status(404).send({status: false, message: 'url not found'})

