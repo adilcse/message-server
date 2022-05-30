@@ -4,6 +4,7 @@ const constants = require('../constants')
 const defaultReciver = process.env.DEFAULT_RECEIVER;
 
 const bootstrap = async (req,res,next) => {
+    const query = req.query;
     try {
         const sendData = {
             status: true,
@@ -14,8 +15,8 @@ const bootstrap = async (req,res,next) => {
             }
         }
         const doc = await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).get();
+        if (process.env.SHOW_TABLE == 'true' || (query && query.showTable == 'true')) {
         const messageCount = await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).get();
-        if (process.env.SHOW_TABLE == 'true') {
             if (messageCount.exists) {
                 const count = messageCount.data();
                 if (count && count.messagesCount) {

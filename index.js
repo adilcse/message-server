@@ -65,9 +65,11 @@ app.get('/logout', chechAuth, (req,res) => {
 app.post('/list', isMyApp,saveList);
 app.post('/message', isMyApp,saveMessage);
 app.get('/getReceiver', isMyApp,getReceiver);
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
+
 app.use((req, res, next) => {
   res.status(404).send({status: false, message: 'url not found'})
 })
