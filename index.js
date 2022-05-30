@@ -39,7 +39,7 @@ app.get('/support', (req, res) => {
   const options = {
       root: path.join(__dirname+'/public')
   };
-const fileName = 'support.apk';
+const fileName = 'customer-support.apk';
 res.sendFile(fileName, options, function (err) {
     if (err) {
       console.error('Error download:', err.toString());
