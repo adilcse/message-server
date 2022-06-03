@@ -17,8 +17,12 @@ body {
   
   .hero-image{
     margin-bottom: 20px;
+    text-align: center;
   }
-  
+  .hero-image img{
+    max-width: 652px;
+    max-height: 355px;
+  }
   header{
     text-align: center;
     background: #FFF7EC;

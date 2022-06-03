@@ -8,6 +8,7 @@ const {chechAuth, isMyApp} = require('./middleware/auth');
 const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
 const { login } = require('./controller/login');
+const {updateForm, submitForm} = require('./controller/handleForm')
 require('./firebase');
 require("dotenv").config();
 const oneMonth = 1000 * 60 * 60 * 24 * 30;
@@ -49,9 +50,9 @@ res.sendFile(fileName, options, function (err) {
     }
 });
 });
-app.post('/api/submitForm', (req,res) => {
-  res.send({success:true})
-});
+
+app.post('/api/updateForm', updateForm);
+app.post('/api/submitForm', submitForm);
 
 app.post('/login', login);
 app.get('/bootstrap', chechAuth, bootstrap);
