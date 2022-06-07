@@ -1,4 +1,4 @@
-const {db, FieldValue} = require('../firebase');
+const {db, FieldValue} = require('../my-firebase');
 const constants = require('../constants')
 constants.FORM_DATA_COUNTER_COLLECTION
 const updateForm = async (req, res) => {

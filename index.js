@@ -9,7 +9,7 @@ const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
 const { login } = require('./controller/login');
 const {updateForm, submitForm} = require('./controller/handleForm')
-require('./firebase');
+require('./my-firebase');
 require("dotenv").config();
 const oneMonth = 1000 * 60 * 60 * 24 * 30;
 
@@ -30,7 +30,7 @@ app.use(session({
   }
 }));
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(','): '*',
     credentials: true
 }));
 

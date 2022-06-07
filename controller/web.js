@@ -1,4 +1,4 @@
-const {db, FieldValue} = require('../firebase');
+const {db, FieldValue} = require('../my-firebase');
 const forwardMessage = require('./forwardMessage');
 const constants = require('../constants')
 const defaultReciver = process.env.DEFAULT_RECEIVER;
