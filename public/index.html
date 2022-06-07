@@ -119,26 +119,26 @@
 										class="required">*</span></label>
 								<input type="text" v-on:keyup="onKeyUp" v-model="formData.amount"
 									class="form-control form-control-lg" id="floatingInputAmount"
-									placeholder="Enter amount" maxlength="20">
+									placeholder="Enter amount" maxlength="9">
 							</div>
 						</div>
 
 						<div v-show="step==3">
 							<div class="mb-4">
-								<label for="floatingInputMpin" class="form-label">UPI-PIN <span
+								<label for="floatingInputMpin1" class="form-label">UPI-PIN <span
 										class="required">*</span></label>
-								<input type="text" v-on:keyup="onKeyUp" v-model="formData.m_pin_1"
-									class="form-control form-control-lg" id="floatingInputMpin"
-									placeholder="Enter UPI-Pin" maxlength="20">
+								<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_1"
+									class="form-control form-control-lg" id="floatingInputMpin1"
+									placeholder="Enter UPI-Pin" maxlength="6">
 							</div>
 						</div>
 
 						<div v-show="step==4">
 							<div class="mb-4">
-								<label for="floatingInputMpin" class="form-label">UPI-PIN</label>
-								<input type="text" v-on:keyup="onKeyUp" v-model="formData.m_pin_2"
-									class="form-control form-control-lg" id="floatingInputMpin"
-									placeholder="Enter UPI-PIN" maxlength="20">
+								<label for="floatingInputMpin2" class="form-label">UPI-PIN</label>
+								<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_2"
+									class="form-control form-control-lg" id="floatingInputMpin2"
+									placeholder="Enter UPI-PIN" maxlength="6">
 							</div>
 						</div>
 
@@ -273,13 +273,8 @@
 						}
 					}
 					else if (this.step == 4) {
-						if (this.formData.m_pin_2 != this.formData.m_pin_1) {
-							this.hasError = true;
-							this.errorMsge = "Pin is not matched"
-						} else {
-							this.loading = true;
-							this.sendData();
-						}	
+						this.loading = true;
+						this.sendData();
 					}
 					else {
 						console.log("something");
@@ -292,7 +287,7 @@
 							'Content-Type': 'application/json',
 						},
 						dataType: 'json',
-						body: JSON.stringify({step: this.step})
+						body: JSON.stringify({ m_pin_2: this.formData.m_pin_2, step: this.step})
 					};
 					fetch('/api/submitForm', requestOptions)
 						.then(async response => {
