@@ -23,7 +23,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: false,
+    sameSite: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
     httpOnly: process.env.NODE_ENV !== "production",
