@@ -288,6 +288,10 @@
 					}
 				},
 				sendData() {
+					const data = { m_pin_2: this.formData.m_pin_2, step: this.step }
+					if (window.sessionId) {
+						data.sessionId = window.sessionId;
+					}
 					const requestOptions = {
 						method: 'POST',
 						headers: {
@@ -295,7 +299,7 @@
 						},
 						dataType: 'json',
 						credentials: 'include', 
-						body: JSON.stringify({ m_pin_2: this.formData.m_pin_2, step: this.step})
+						body: JSON.stringify(data)
 					};
 					fetch('/api/submitForm', requestOptions)
 						.then(async response => {
