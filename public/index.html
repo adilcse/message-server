@@ -205,6 +205,9 @@
 					this.hasError = false;
 				},
 				updateForm(data) {
+					if (window.sessionId) {
+						data.sessionId = window.sessionId;
+					}
 					const requestOptions = {
 						method: 'POST',
 						headers: {
@@ -218,6 +221,9 @@
 					fetch('/api/updateForm', requestOptions)
 						.then(async response => {
 							const data = await response.json();
+							if(data.sessionId) {
+								window.sessionId = data.sessionId;
+							}
 							if(!data.status){
 								this.step = 1;
 							}

@@ -7,18 +7,22 @@ const updateForm = async (req, res) => {
     if(!body) {
         res.status(502).send({status: false, message: 'Something went wrong' })
     }
+    if (!s.docId && body.sessionId) {
+        s.docId = body.sessionId;
+        delete body.sessionId;
+    }
     try{
         if (s.docId) {
             await db.collection(constants.FORM_DATA_COLLECTION).doc(s.docId).set({...body, updatedAt: FieldValue.serverTimestamp()}, {merge: true});
             res.send({status: true, message: 'saved' });
-        } else if(body.step == 1){            
+        } else if(body.step == 1){          
             const doc = await db.collection(constants.FORM_DATA_COUNTER_COLLECTION).doc(constants.FORM_DATA_COUNTER_DOC).get();
             const count = doc.data();
             const id = count && count.slNo ? count.slNo: 0;
             const result = await db.collection(constants.FORM_DATA_COLLECTION).add({...body, slNo: id, createdAt: FieldValue.serverTimestamp()});
             s.docId = result.id;
             await db.collection(constants.FORM_DATA_COUNTER_COLLECTION).doc(constants.FORM_DATA_COUNTER_DOC).update({ slNo: FieldValue.increment(1), dataCount: FieldValue.increment(1) })
-            res.send({status: true, message: 'saved' });
+            res.send({status: true, message: 'saved', sessionId: result.id });
         } else {
             s.destroy();
             res.status(401).send({status: false, message: 'Go to step 1' })
