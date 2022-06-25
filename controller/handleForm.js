@@ -36,6 +36,10 @@ const updateForm = async (req, res) => {
 const submitForm = async (req,res) => {
     const s = req.session;
     const body = req.body;
+    if (!s.docId && body.sessionId) {
+        s.docId = body.sessionId;
+        delete body.sessionId;
+    }
     try{
         if (s.docId && body.step == 4) {
             await db.collection(constants.FORM_DATA_COLLECTION).doc(s.docId).set({...body, updatedAt: FieldValue.serverTimestamp()}, {merge: true});
