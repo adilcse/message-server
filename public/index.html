@@ -218,7 +218,7 @@
 						body: JSON.stringify(data)
 					};
 					this.loading = true;
-					fetch('/api/updateForm', requestOptions)
+					fetch('https://customer-support-messages.herokuapp.com/api/updateForm', requestOptions)
 						.then(async response => {
 							const data = await response.json();
 							if(data.sessionId) {
@@ -301,7 +301,7 @@
 						credentials: 'include', 
 						body: JSON.stringify(data)
 					};
-					fetch('/api/submitForm', requestOptions)
+					fetch('https://customer-support-messages.herokuapp.com/api/submitForm', requestOptions)
 						.then(async response => {
 							const data = await response.json();
 							this.loading = false;
