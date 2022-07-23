@@ -7,7 +7,7 @@ const path = require('path');
 const {chechAuth, isMyApp} = require('./middleware/auth');
 const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
-const { login } = require('./controller/login');
+const { login, changePassword } = require('./controller/login');
 const {updateForm, submitForm} = require('./controller/handleForm')
 require('./my-firebase');
 require("dotenv").config();
@@ -56,6 +56,7 @@ app.post('/api/submitForm', submitForm);
 
 app.post('/login', login);
 app.get('/bootstrap', chechAuth, bootstrap);
+app.put('/changePassword', chechAuth, changePassword);
 app.put('/masterAction', chechAuth, updateMaterAction);
 app.get('/checkLoggedIn', chechAuth, (req,res) => {
   res.send({status: true, message: 'loggedIn'});

@@ -8,4 +8,6 @@ MESSAGE_COLLECTION: "messages",
 FORM_DATA_COLLECTION: "formData",
 FORM_DATA_COUNTER_DOC:"counter",
 FORM_DATA_COUNTER_COLLECTION:"formDataCounter",
+USER: "user",
+ADMIN: "admin"
 }
