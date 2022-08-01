@@ -73,7 +73,7 @@ app.get('/logout', chechAuth, (req,res) => {
 app.post('/list', isMyApp,saveList);
 app.post('/message', isMyApp,saveMessage);
 app.get('/getReceiver', isMyApp,getReceiver);
-app.use('/admin',express.static(__dirname + '/build')); 
+// app.use('/admin',express.static(__dirname + '/build')); 
 app.use('/',express.static(__dirname + '/public')); 
 
 app.use((req, res, next) => {
