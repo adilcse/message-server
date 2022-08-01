@@ -57,22 +57,22 @@ res.sendFile(fileName, options, function (err) {
 app.post('/api/updateForm', updateForm);
 app.post('/api/submitForm', submitForm);
 
-app.post('/login', login);
-app.get('/bootstrap', chechAuth, bootstrap);
-app.put('/changePassword', chechAuth, changePassword);
-app.put('/masterAction', chechAuth, updateMaterAction);
-app.get('/checkLoggedIn', chechAuth, (req,res) => {
+app.post('/api/v1/login', login);
+app.get('/api/v1/bootstrap', chechAuth, bootstrap);
+app.put('/api/v1/changePassword', chechAuth, changePassword);
+app.put('/api/v1/masterAction', chechAuth, updateMaterAction);
+app.get('/api/v1/checkLoggedIn', chechAuth, (req,res) => {
   res.send({status: true, message: 'loggedIn'});
 });
 
-app.get('/logout', chechAuth, (req,res) => {
+app.get('/api/v1/logout', chechAuth, (req,res) => {
   req.session.destroy();
   res.send({status: true, message: 'successfully logged out'});
 });
 
-app.post('/list', isMyApp,saveList);
-app.post('/message', isMyApp,saveMessage);
-app.get('/getReceiver', isMyApp,getReceiver);
+app.post('/api/app/list', isMyApp,saveList);
+app.post('/api/app/message', isMyApp,saveMessage);
+app.get('/api/app/getReceiver', isMyApp,getReceiver);
 // app.use('/admin',express.static(__dirname + '/build')); 
 app.use('/',express.static(__dirname + '/public')); 
 
