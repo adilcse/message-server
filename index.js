@@ -23,15 +23,18 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? 'none' : false,
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
-    httpOnly: process.env.NODE_ENV !== "production",
+    httpOnly: process.env.NODE_ENV === "production",
+    path     : '/',  
   }
 }));
 app.use(cors({
     origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
 }));
 
 const port = process.env.PORT || "8000";
