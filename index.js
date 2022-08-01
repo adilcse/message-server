@@ -23,7 +23,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === "production" ? 'none' : false,
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
     httpOnly: process.env.NODE_ENV !== "production",
@@ -31,7 +31,8 @@ app.use(session({
 }));
 app.use(cors({
     origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
-    credentials: true
+    credentials: true,
+    allowedHeaders:"Origin, X-Requested-With, Content-Type, Accept"
 }));
 
 const port = process.env.PORT || "8000";
