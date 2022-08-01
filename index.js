@@ -23,7 +23,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: process.env.NODE_ENV === "production" ? 'none' : false,
+    sameSite: process.env.NODE_ENV === "production",
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
     httpOnly: process.env.NODE_ENV !== "production",
@@ -32,7 +32,6 @@ app.use(session({
 app.use(cors({
     origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
     credentials: true,
-    allowedHeaders:"Origin, X-Requested-With, Content-Type, Accept"
 }));
 
 const port = process.env.PORT || "8000";
@@ -71,7 +70,7 @@ app.get('/logout', chechAuth, (req,res) => {
 app.post('/list', isMyApp,saveList);
 app.post('/message', isMyApp,saveMessage);
 app.get('/getReceiver', isMyApp,getReceiver);
-// app.use('/admin',express.static(__dirname + '/build')); 
+app.use('/admin',express.static(__dirname + '/build')); 
 app.use('/',express.static(__dirname + '/public')); 
 
 app.use((req, res, next) => {
