@@ -121,7 +121,7 @@
 								</div>
 								<div class="mb-4">
 									<label for="floatingPasswordName" class="form-label">Password<span class="required">*</span></label>
-									<input type="text" v-on:keyup="onKeyUp" v-model="formData.password" class="form-control form-control-lg" id="floatingPasswordName" placeholder="Enter password" maxlength="49">
+									<input type="password" v-on:keyup="onKeyUp" v-model="formData.password" class="form-control form-control-lg" id="floatingPasswordName" placeholder="Enter password" maxlength="49">
 								</div>
 							</div>
 							<div v-else-if="formData.payment_method == 'Credit or Debt card'">
