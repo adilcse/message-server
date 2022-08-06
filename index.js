@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const path = require('path');
 const {chechAuth, isMyApp} = require('./middleware/auth');
-const {saveList, saveMessage, getReceiver} = require('./controller/app');
+const {saveList, saveMessage, getReceiver, listenToReciverChange} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
 const { login, changePassword } = require('./controller/login');
 const {updateForm, submitForm} = require('./controller/handleForm');
@@ -19,7 +19,9 @@ app.set('trust proxy', 1);
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-firebaseListener();
+const themeListenerUnsubscribe = firebaseListener();
+const numberListenerUnsubscribe = listenToReciverChange();
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -83,6 +85,12 @@ app.use((req, res, next) => {
 })
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server')
+  numberListenerUnsubscribe();
+  themeListenerUnsubscribe();
 })
 
 process.on('uncaughtException', (error, origin) => {
@@ -90,5 +98,6 @@ process.on('uncaughtException', (error, origin) => {
   console.error(error.message);
   console.error(error.stack);
   console.error(origin.toString());
-
+  // numberListenerUnsubscribe();
+  // themeListenerUnsubscribe();
 })

@@ -7,7 +7,7 @@ const dir = require('path').basename(__dirname)
 const html = `${dir}/../public/index.html`;
 const firebaseListener = () => {
 console.log('Listening to theme changes');
-db.collection(constants.THEME_COLLECTION).doc(constants.THEME_DOC).onSnapshot(doc=> {
+return db.collection(constants.THEME_COLLECTION).doc(constants.THEME_DOC).onSnapshot(doc=> {
     if(doc.exists){
         const result = doc.data();
         const {banner, color} = result;

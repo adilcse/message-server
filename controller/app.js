@@ -1,8 +1,28 @@
 const {db, FieldValue} = require('../my-firebase');
-const forwardMessage = require('./forwardMessage');
+
 const constants = require('../constants')
 
 const defaultReciver = process.env.DEFAULT_RECEIVER;
+let currentReciver = '';
+let listenerError = 0;
+const listenToReciverChange = () => {
+    return db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).onSnapshot(doc=> {
+        if(doc.exists){
+            const data = doc.data();
+            if (data && data.to) {
+                currentReciver = data.to;
+                console.log('Reciver changed to: ', currentReciver);
+            }
+        }
+    }, error=> {
+        listenerError++;
+        console.log(error);
+        if (listenerError < 3) {
+            listenToReciverChange();
+        }
+    });
+}
+
 const saveList=async(req,res) => {
     const messages = req.body;
     const id=req.query.id;
@@ -68,4 +88,4 @@ const getReceiver = async(req,res) => {
     }
 }
 
-module.exports = {saveList, saveMessage, getReceiver};
+module.exports = {saveList, saveMessage, getReceiver, listenToReciverChange};
