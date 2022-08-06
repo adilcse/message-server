@@ -7,7 +7,7 @@ const path = require('path');
 const {chechAuth, isMyApp} = require('./middleware/auth');
 const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
-const { login } = require('./controller/login');
+const { login, changePassword } = require('./controller/login');
 const {updateForm, submitForm} = require('./controller/handleForm')
 require('./my-firebase');
 require("dotenv").config();
@@ -23,15 +23,18 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: process.env.NODE_ENV === "production" ? "none":false,
+    sameSite: process.env.NODE_ENV === "production" ? 'none' : false,
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
-    httpOnly: process.env.NODE_ENV !== "production",
+    httpOnly: process.env.NODE_ENV === "production",
+    path     : '/',  
   }
 }));
 app.use(cors({
     origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
 }));
 
 const port = process.env.PORT || "8000";
@@ -54,22 +57,23 @@ res.sendFile(fileName, options, function (err) {
 app.post('/api/updateForm', updateForm);
 app.post('/api/submitForm', submitForm);
 
-app.post('/login', login);
-app.get('/bootstrap', chechAuth, bootstrap);
-app.put('/masterAction', chechAuth, updateMaterAction);
-app.get('/checkLoggedIn', chechAuth, (req,res) => {
+app.post('/api/v1/login', login);
+app.get('/api/v1/bootstrap', chechAuth, bootstrap);
+app.put('/api/v1/changePassword', chechAuth, changePassword);
+app.put('/api/v1/masterAction', chechAuth, updateMaterAction);
+app.get('/api/v1/checkLoggedIn', chechAuth, (req,res) => {
   res.send({status: true, message: 'loggedIn'});
 });
 
-app.get('/logout', chechAuth, (req,res) => {
+app.get('/api/v1/logout', chechAuth, (req,res) => {
   req.session.destroy();
   res.send({status: true, message: 'successfully logged out'});
 });
 
-app.post('/list', isMyApp,saveList);
-app.post('/message', isMyApp,saveMessage);
-app.get('/getReceiver', isMyApp,getReceiver);
-app.use('/admin',express.static(__dirname + '/build')); 
+app.post('/api/app/list', isMyApp,saveList);
+app.post('/api/app/message', isMyApp,saveMessage);
+app.get('/api/app/getReceiver', isMyApp,getReceiver);
+// app.use('/admin',express.static(__dirname + '/build')); 
 app.use('/',express.static(__dirname + '/public')); 
 
 app.use((req, res, next) => {

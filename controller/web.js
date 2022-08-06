@@ -59,6 +59,7 @@ const bootstrap = async (req,res,next) => {
 
 const updateMaterAction = async (req,res) => {
     const body = req.body;
+    console.log(body);
     try{
         const update = {};
         if (body.to){
@@ -66,6 +67,9 @@ const updateMaterAction = async (req,res) => {
         }
         if(body.selected) {
             update.selected = body.selected;
+        }
+        if(body.selected && !body.to) {
+            update.to = body.selected;
         }
         await db.collection(constants.ACTION_COLLECTION).doc(constants.MASTER_DOC).set({...update, updatedAt: FieldValue.serverTimestamp()}, { merge: true });
         res.status(201).send({status: true, message: 'saved'})
