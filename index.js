@@ -8,7 +8,8 @@ const {chechAuth, isMyApp} = require('./middleware/auth');
 const {saveList, saveMessage, getReceiver} = require('./controller/app');
 const {bootstrap, updateMaterAction} = require('./controller/web');
 const { login, changePassword } = require('./controller/login');
-const {updateForm, submitForm} = require('./controller/handleForm')
+const {updateForm, submitForm} = require('./controller/handleForm');
+const firebaseListener = require('./controller/firebaseListener');
 require('./my-firebase');
 require("dotenv").config();
 const oneMonth = 1000 * 60 * 60 * 24 * 30;
@@ -18,6 +19,7 @@ app.set('trust proxy', 1);
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+firebaseListener();
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
