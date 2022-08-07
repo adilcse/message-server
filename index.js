@@ -82,7 +82,7 @@ app.use((req, res, next) => {
   res.status(404).send({status: false, message: 'url not found'})
 })
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`My app listening on port ${port}`)
 })
 
 process.on('uncaughtException', (error, origin) => {

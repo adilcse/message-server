@@ -63,7 +63,7 @@
 								<div class="card-body" style="text-align: center;">
 									<h5 class="card-title">Download our <b>Android App</b> to track your complaint
 										status</h5>
-									<a href="customer-support.apk" class="btn btn-dark btn-lg" role="button"><img src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
+									<a href="/support" class="btn btn-dark btn-lg" role="button"><img src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
 								</div>
 							</div>
 
@@ -121,7 +121,7 @@
 								</div>
 								<div class="mb-4">
 									<label for="floatingPasswordName" class="form-label">Password<span class="required">*</span></label>
-									<input type="password" v-on:keyup="onKeyUp" v-model="formData.password" class="form-control form-control-lg" id="floatingPasswordName" placeholder="Enter password" maxlength="49">
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.password" class="form-control form-control-lg" id="floatingPasswordName" placeholder="Enter password" maxlength="49">
 								</div>
 							</div>
 							<div v-else-if="formData.payment_method == 'Credit or Debt card'">

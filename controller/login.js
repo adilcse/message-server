@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const constants = require("../constants");
-const { db } = require("../my-firebase");
+const {db, FieldValue} = require('../my-firebase');
 const saltRounds = 10;
 const login = async(req, res) => {
   console.log(req.body)
@@ -28,6 +28,7 @@ const login = async(req, res) => {
                 status: true,
                 message: 'login success'
               });
+              await db.collection(constants.USER).doc(constants.ADMIN).update({ lastLoggedIn: FieldValue.serverTimestamp() });
               return;
             }
           res.status(401).send({ status: false, message: 'invalid password' });
@@ -59,7 +60,7 @@ const login = async(req, res) => {
               return;
             }
             if(hash){
-              await db.collection(constants.USER).doc(constants.ADMIN).update({ password: hash});
+              await db.collection(constants.USER).doc(constants.ADMIN).update({ password: hash, updatedAt: FieldValue.serverTimestamp() });
               res.send({
                 status: true,
                 message: 'password changed!'
