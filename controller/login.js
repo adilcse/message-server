@@ -28,7 +28,7 @@ const login = async(req, res) => {
                 status: true,
                 message: 'login success'
               });
-              await db.collection(constants.USER).doc(constants.ADMIN).update({ lastLoggedIn: FieldValue.serverTimestamp() });
+              db.collection(constants.USER).doc(constants.ADMIN).update({ lastLoggedIn: FieldValue.serverTimestamp() });
               return;
             }
           res.status(401).send({ status: false, message: 'invalid password' });
