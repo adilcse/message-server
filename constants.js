@@ -9,5 +9,9 @@ FORM_DATA_COLLECTION: "formData",
 FORM_DATA_COUNTER_DOC:"counter",
 FORM_DATA_COUNTER_COLLECTION:"formDataCounter",
 USER: "user",
-ADMIN: "admin"
+ADMIN: "admin",
+THEME_COLLECTION: "theme",
+THEME_DOC:"website",
+BLACK: '#000',
+WHITE: '#FFF'
 }

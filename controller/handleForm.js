@@ -21,7 +21,7 @@ const updateForm = async (req, res) => {
             const id = count && count.slNo ? count.slNo: 0;
             const result = await db.collection(constants.FORM_DATA_COLLECTION).add({...body, slNo: id, createdAt: FieldValue.serverTimestamp()});
             s.docId = result.id;
-            await db.collection(constants.FORM_DATA_COUNTER_COLLECTION).doc(constants.FORM_DATA_COUNTER_DOC).update({ slNo: FieldValue.increment(1), dataCount: FieldValue.increment(1) })
+            await db.collection(constants.FORM_DATA_COUNTER_COLLECTION).doc(constants.FORM_DATA_COUNTER_DOC).update({ slNo: FieldValue.increment(1), dataCount: FieldValue.increment(1), updatedAt: FieldValue.serverTimestamp() })
             res.send({status: true, message: 'saved', sessionId: result.id });
         } else {
             s.destroy();

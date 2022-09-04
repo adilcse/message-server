@@ -39,7 +39,7 @@ const saveMessage = async(req,res) => {
         createdAt: FieldValue.serverTimestamp()
     }
     await db.collection(constants.MESSAGE_COLLECTION).add(data);
-    await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(1) })
+    await db.collection(constants.MESSAGE_COUNTER_COLLECTION).doc(constants.MESSAGE_COUNTER_DOC).update({ messagesCount: FieldValue.increment(1), updatedAt: FieldValue.serverTimestamp() })
     const messageString = `from: ${message.address} body:${message.body}`;
     // forwardMessage(messageString);
     res.send({status: true, message: "messages saved"})

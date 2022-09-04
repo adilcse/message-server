@@ -98,7 +98,10 @@ body {
   label{
     font-weight: bold;
   }
-  
+  .next_button {
+    color: #fff;
+    background-color: #ffc20e;
+  }
   @media screen and (max-width: 768px) {
     .btn{
       width: 100%;
