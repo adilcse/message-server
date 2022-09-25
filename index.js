@@ -29,7 +29,7 @@ app.use(session({
     secure: process.env.NODE_ENV === "production",
     maxAge: oneMonth,
     httpOnly: process.env.NODE_ENV === "production",
-    path     : '/',  
+    path     : '/',
   }
 }));
 app.use(cors({

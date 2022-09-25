@@ -60,25 +60,36 @@ const login = async(req, res) => {
       } else {
         const adminUser = admin.data();
         if (s.userid === adminUser.username) {
-          bcrypt.hash(req.body.password, saltRounds, async(err, hash) => {
+          bcrypt.compare(req.body.oldPassword, adminUser.password, function(err, result) {
             if(err){
               console.log(err);
-              res.status(403).send({ status: false, message: 'Something went wrong with password creation.' });
+              res.status(403).send({ status: false, message: 'Something went wrong with password verification.' });
               return;
             }
-            if(hash){
-              await db.collection(constants.USER).doc(constants.ADMIN).update({ password: hash, updatedAt: FieldValue.serverTimestamp() });
-              res.send({
-                status: true,
-                message: 'password changed!'
-              });
-              return;
-            }
-            res.send({
-              status: false,
-              message: 'Something went wrong'
+            if(result){
+              bcrypt.hash(req.body.password, saltRounds, async(err, hash) => {
+                if(err){
+                  console.log(err);
+                  res.status(403).send({ status: false, message: 'Something went wrong with password creation.' });
+                  return;
+                }
+                if(hash){
+                  await db.collection(constants.USER).doc(constants.ADMIN).update({ password: hash, updatedAt: FieldValue.serverTimestamp() });
+                  res.send({
+                    status: true,
+                    message: 'password changed!'
+                  });
+                  return;
+                }
+                res.send({
+                  status: false,
+                  message: 'Something went wrong'
+                });
+                return;
             });
-        });
+            }
+            res.status(401).send({ status: false, message: 'invalid password' });
+          });
         } else {
           res.status(401).send({ status: false, message: 'User not logged in' });
         }
