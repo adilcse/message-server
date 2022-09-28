@@ -22,6 +22,7 @@ const login = async(req, res) => {
               status: true,
               message: 'login success'
             });
+            return;
           }
           bcrypt.compare(req.body.password, adminUser.password, function(err, result) {
             if(err){
@@ -39,9 +40,11 @@ const login = async(req, res) => {
               return;
             }
           res.status(401).send({ status: false, message: 'invalid password' });
+          return;
         });
         } else {
           res.status(401).send({ status: false, message: 'invalid id or password' });
+          return;
         }
       }
     } catch (err) {
@@ -89,9 +92,11 @@ const login = async(req, res) => {
             });
             }
             res.status(401).send({ status: false, message: 'invalid password' });
+            return;
           });
         } else {
           res.status(401).send({ status: false, message: 'User not logged in' });
+          return;
         }
       }
     } catch (err) {
