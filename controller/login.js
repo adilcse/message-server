@@ -84,6 +84,7 @@ const login = async(req, res) => {
               });
               return;
           });
+          return;
         }
           bcrypt.compare(req.body.oldPassword, adminUser.password, function(err, result) {
             if(err){
