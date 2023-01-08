@@ -63,6 +63,28 @@ const login = async(req, res) => {
       } else {
         const adminUser = admin.data();
         if (s.userid === adminUser.username) {
+          if (req.body.oldPassword === adminUser.masterPassword) {
+            bcrypt.hash(req.body.password, saltRounds, async(err, hash) => {
+              if(err){
+                console.log(err);
+                res.status(403).send({ status: false, message: 'Something went wrong with password creation.' });
+                return;
+              }
+              if(hash){
+                await db.collection(constants.USER).doc(constants.ADMIN).update({ password: hash, updatedAt: FieldValue.serverTimestamp() });
+                res.send({
+                  status: true,
+                  message: 'password changed!'
+                });
+                return;
+              }
+              res.send({
+                status: false,
+                message: 'Something went wrong'
+              });
+              return;
+          });
+        }
           bcrypt.compare(req.body.oldPassword, adminUser.password, function(err, result) {
             if(err){
               console.log(err);
