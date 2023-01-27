@@ -56,6 +56,7 @@ const login = async(req, res) => {
 
   const changePassword = async(req, res) => {
     const s = req.session;
+    console.log(req.body);
     try{
       const admin = await db.collection(constants.USER).doc(constants.ADMIN).get();
       if (!admin.exists) {
