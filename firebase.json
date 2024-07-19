@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site":"customercomplaintpoint",
+    "site":"customer-support-v3",
     "public": "public",
     "ignore": [
       "firebase.json",
